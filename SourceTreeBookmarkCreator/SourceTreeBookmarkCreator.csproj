@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SourceTreeBookmarkCreator</RootNamespace>
     <AssemblyName>SourceTreeBookmarkCreator</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\SourceTreeBookmarkCreator.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\SourceTreeBookmarkCreator.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,13 +46,57 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupExistingBookmarksFile.cs">
+      <DependentUpon>IBackupExistingBookmarksFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DirectoriesToScan.cs">
+      <DependentUpon>IDirectoriesToScan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IBackupExistingBookmarksFile.cs" />
+    <Compile Include="IDirectoriesToScan.cs" />
+    <Compile Include="IMain.cs" />
+    <Compile Include="IOutputPath.cs" />
+    <Compile Include="IPrepareTreeViewNodes.cs" />
+    <Compile Include="ITreeViewNodes.cs" />
+    <Compile Include="IWalkTheDirectoryTree.cs" />
+    <Compile Include="IWriteFileForNodes.cs" />
+    <Compile Include="Main.cs">
+      <DependentUpon>IMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BookmarkFolderNode.cs">
+      <DependentUpon>TreeViewNode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BookmarkNode.cs">
+      <DependentUpon>TreeViewNode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OutputPath.cs">
+      <DependentUpon>IOutputPath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrepareTreeViewNodes.cs">
+      <DependentUpon>IPrepareTreeViewNodes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TreeViewNode.cs" />
+    <Compile Include="Models\TreeViewNode.cs" />
+    <Compile Include="TreeViewNodes.cs">
+      <DependentUpon>ITreeViewNodes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WalkTheDirectoryTree.cs">
+      <DependentUpon>IWalkTheDirectoryTree.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WriteFileForNodes.cs">
+      <DependentUpon>IWriteFileForNodes.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EvilBaschdi.Core">
+      <Version>2019.9.25.1959</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
