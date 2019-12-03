@@ -7,6 +7,5 @@ namespace SourceTreeBookmarkCreator
     /// <inheritdoc />
     public interface IPrepareTreeViewNodes : IValue<List<TreeViewNode>>
     {
-
     }
 }

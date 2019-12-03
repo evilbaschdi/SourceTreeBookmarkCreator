@@ -1,8 +1,5 @@
 using System.Linq;
-using AutoFixture;
-using AutoFixture.AutoNSubstitute;
 using AutoFixture.Idioms;
-using AutoFixture.Xunit2;
 using EvilBaschdi.Testing;
 using FluentAssertions;
 using Xunit;

@@ -9,8 +9,9 @@ namespace SourceTreeBookmarkCreator
     public class BackupExistingBookmarksFile : IBackupExistingBookmarksFile
     {
         private readonly IOutputPath _outputPath;
+
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="outputPath"></param>
         public BackupExistingBookmarksFile(IOutputPath outputPath)

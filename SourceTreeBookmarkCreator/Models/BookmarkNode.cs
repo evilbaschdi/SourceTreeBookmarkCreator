@@ -8,9 +8,9 @@
         public string Path { get; set; }
 
         /// <remarks />
-        
+
         public string RepoType { get; set; } = "Git";
-       
+
 
         /// <remarks />
         public override string ToString() => $"Name: {Name} Path: {Path}";

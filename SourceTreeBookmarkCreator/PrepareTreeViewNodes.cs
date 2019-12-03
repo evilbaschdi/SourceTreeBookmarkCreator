@@ -12,8 +12,9 @@ namespace SourceTreeBookmarkCreator
         private readonly IDirectoriesToScan _directoriesToScan;
         private readonly ITreeViewNodes _treeViewNodes;
         private readonly IWalkTheDirectoryTree _walkTheDirectoryTree;
+
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="directoriesToScan"></param>
         /// <param name="treeViewNodes"></param>
@@ -30,9 +31,8 @@ namespace SourceTreeBookmarkCreator
         {
             get
             {
-
                 var directoriesToScan = _directoriesToScan.Value;
-                
+
                 if (directoriesToScan.Any())
                 {
                     foreach (var arg in directoriesToScan)
