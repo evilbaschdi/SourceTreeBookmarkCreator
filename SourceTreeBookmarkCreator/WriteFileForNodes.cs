@@ -30,11 +30,9 @@ namespace SourceTreeBookmarkCreator
             {
                 var treeViewNodes = _prepareTreeViewNodes.Value;
                 var writer = new XmlSerializer(treeViewNodes.GetType());
-                using (var file = new StreamWriter(_outputPath.Value))
-                {
-                    writer.Serialize(file, treeViewNodes);
-                    file.Close();
-                }
+                using var file = new StreamWriter(_outputPath.Value);
+                writer.Serialize(file, treeViewNodes);
+                file.Close();
             }
             catch (UnauthorizedAccessException unauthorizedAccessException) when (!Debugger.IsAttached)
             {
