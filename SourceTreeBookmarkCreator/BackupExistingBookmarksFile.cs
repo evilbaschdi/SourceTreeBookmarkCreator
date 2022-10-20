@@ -1,52 +1,49 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Security;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public class BackupExistingBookmarksFile : IBackupExistingBookmarksFile
 {
-    /// <inheritdoc />
-    public class BackupExistingBookmarksFile : IBackupExistingBookmarksFile
+    private readonly IOutputPath _outputPath;
+
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="outputPath"></param>
+    public BackupExistingBookmarksFile(IOutputPath outputPath)
     {
-        private readonly IOutputPath _outputPath;
+        _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
+    }
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="outputPath"></param>
-        public BackupExistingBookmarksFile(IOutputPath outputPath)
+    /// <inheritdoc />
+    public void Run()
+    {
+        try
         {
-            _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
+            if (File.Exists(_outputPath.Value))
+            {
+                File.Move(_outputPath.Value, $"{_outputPath}_backup_{DateTime.Now:yyyy-dd-M--HH-mm-ss}");
+            }
         }
-
-        /// <inheritdoc />
-        public void Run()
+        catch (UnauthorizedAccessException unauthorizedAccessException) when (!Debugger.IsAttached)
         {
-            try
-            {
-                if (File.Exists(_outputPath.Value))
-                {
-                    File.Move(_outputPath.Value, $"{_outputPath}_backup_{DateTime.Now:yyyy-dd-M--HH-mm-ss}");
-                }
-            }
-            catch (UnauthorizedAccessException unauthorizedAccessException) when (!Debugger.IsAttached)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(unauthorizedAccessException.Message);
-                Console.ReadKey();
-            }
-            catch (IOException ioException) when (!Debugger.IsAttached)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ioException.Message);
-                Console.ReadKey();
-            }
-            catch (SecurityException securityException) when (!Debugger.IsAttached)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(securityException.Message);
-                Console.ReadKey();
-            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(unauthorizedAccessException.Message);
+            Console.ReadKey();
+        }
+        catch (IOException ioException) when (!Debugger.IsAttached)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(ioException.Message);
+            Console.ReadKey();
+        }
+        catch (SecurityException securityException) when (!Debugger.IsAttached)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(securityException.Message);
+            Console.ReadKey();
         }
     }
 }

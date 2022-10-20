@@ -1,9 +1,8 @@
 ﻿using EvilBaschdi.Core;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public interface IBackupExistingBookmarksFile : IRun
 {
-    /// <inheritdoc />
-    public interface IBackupExistingBookmarksFile : IRun
-    {
-    }
 }

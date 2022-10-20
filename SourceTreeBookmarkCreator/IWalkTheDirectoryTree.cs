@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using EvilBaschdi.Core;
+﻿using EvilBaschdi.Core;
 using SourceTreeBookmarkCreator.Models;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public interface IWalkTheDirectoryTree : IValueFor<string, List<TreeViewNode>>
 {
-    /// <inheritdoc />
-    public interface IWalkTheDirectoryTree : IValueFor<string, List<TreeViewNode>>
-    {
-    }
 }

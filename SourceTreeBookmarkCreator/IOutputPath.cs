@@ -1,9 +1,8 @@
 ﻿using EvilBaschdi.Core;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public interface IOutputPath : IString
 {
-    /// <inheritdoc />
-    public interface IOutputPath : IValue<string>
-    {
-    }
 }

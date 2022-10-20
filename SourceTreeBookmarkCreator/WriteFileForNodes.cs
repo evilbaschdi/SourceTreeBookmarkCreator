@@ -1,57 +1,54 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Security;
 using System.Xml.Serialization;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public class WriteFileForNodes : IWriteFileForNodes
 {
-    /// <inheritdoc />
-    public class WriteFileForNodes : IWriteFileForNodes
+    private readonly IOutputPath _outputPath;
+    private readonly IPrepareTreeViewNodes _prepareTreeViewNodes;
+
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="prepareTreeViewNodes"></param>
+    /// <param name="outputPath"></param>
+    public WriteFileForNodes(IPrepareTreeViewNodes prepareTreeViewNodes, IOutputPath outputPath)
     {
-        private readonly IOutputPath _outputPath;
-        private readonly IPrepareTreeViewNodes _prepareTreeViewNodes;
+        _prepareTreeViewNodes = prepareTreeViewNodes ?? throw new ArgumentNullException(nameof(prepareTreeViewNodes));
+        _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
+    }
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="prepareTreeViewNodes"></param>
-        /// <param name="outputPath"></param>
-        public WriteFileForNodes(IPrepareTreeViewNodes prepareTreeViewNodes, IOutputPath outputPath)
+    /// <inheritdoc />
+    public void Run()
+    {
+        try
         {
-            _prepareTreeViewNodes = prepareTreeViewNodes ?? throw new ArgumentNullException(nameof(prepareTreeViewNodes));
-            _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
+            var treeViewNodes = _prepareTreeViewNodes.Value;
+            var writer = new XmlSerializer(treeViewNodes.GetType());
+            using var file = new StreamWriter(_outputPath.Value);
+            writer.Serialize(file, treeViewNodes);
+            file.Close();
         }
-
-        /// <inheritdoc />
-        public void Run()
+        catch (UnauthorizedAccessException unauthorizedAccessException) when (!Debugger.IsAttached)
         {
-            try
-            {
-                var treeViewNodes = _prepareTreeViewNodes.Value;
-                var writer = new XmlSerializer(treeViewNodes.GetType());
-                using var file = new StreamWriter(_outputPath.Value);
-                writer.Serialize(file, treeViewNodes);
-                file.Close();
-            }
-            catch (UnauthorizedAccessException unauthorizedAccessException) when (!Debugger.IsAttached)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(unauthorizedAccessException.Message);
-                Console.ReadKey();
-            }
-            catch (IOException ioException) when (!Debugger.IsAttached)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ioException.Message);
-                Console.ReadKey();
-            }
-            catch (SecurityException securityException) when (!Debugger.IsAttached)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(securityException.Message);
-                Console.ReadKey();
-            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(unauthorizedAccessException.Message);
+            Console.ReadKey();
+        }
+        catch (IOException ioException) when (!Debugger.IsAttached)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(ioException.Message);
+            Console.ReadKey();
+        }
+        catch (SecurityException securityException) when (!Debugger.IsAttached)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(securityException.Message);
+            Console.ReadKey();
         }
     }
 }

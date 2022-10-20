@@ -1,56 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SourceTreeBookmarkCreator.Models;
+﻿using SourceTreeBookmarkCreator.Models;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public class PrepareTreeViewNodes : IPrepareTreeViewNodes
 {
-    /// <inheritdoc />
-    public class PrepareTreeViewNodes : IPrepareTreeViewNodes
+    private readonly IDirectoriesToScan _directoriesToScan;
+    private readonly ITreeViewNodes _treeViewNodes;
+    private readonly IWalkTheDirectoryTree _walkTheDirectoryTree;
+
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="directoriesToScan"></param>
+    /// <param name="treeViewNodes"></param>
+    /// <param name="walkTheDirectoryTree"></param>
+    public PrepareTreeViewNodes(IDirectoriesToScan directoriesToScan, ITreeViewNodes treeViewNodes, IWalkTheDirectoryTree walkTheDirectoryTree)
     {
-        private readonly IDirectoriesToScan _directoriesToScan;
-        private readonly ITreeViewNodes _treeViewNodes;
-        private readonly IWalkTheDirectoryTree _walkTheDirectoryTree;
+        _directoriesToScan = directoriesToScan ?? throw new ArgumentNullException(nameof(directoriesToScan));
+        _treeViewNodes = treeViewNodes ?? throw new ArgumentNullException(nameof(treeViewNodes));
+        _walkTheDirectoryTree = walkTheDirectoryTree ?? throw new ArgumentNullException(nameof(walkTheDirectoryTree));
+    }
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="directoriesToScan"></param>
-        /// <param name="treeViewNodes"></param>
-        /// <param name="walkTheDirectoryTree"></param>
-        public PrepareTreeViewNodes(IDirectoriesToScan directoriesToScan, ITreeViewNodes treeViewNodes, IWalkTheDirectoryTree walkTheDirectoryTree)
+    /// <inheritdoc />
+    public List<TreeViewNode> Value
+    {
+        get
         {
-            _directoriesToScan = directoriesToScan ?? throw new ArgumentNullException(nameof(directoriesToScan));
-            _treeViewNodes = treeViewNodes ?? throw new ArgumentNullException(nameof(treeViewNodes));
-            _walkTheDirectoryTree = walkTheDirectoryTree ?? throw new ArgumentNullException(nameof(walkTheDirectoryTree));
-        }
+            var directoriesToScan = _directoriesToScan.Value;
 
-        /// <inheritdoc />
-        public List<TreeViewNode> Value
-        {
-            get
+            if (directoriesToScan.Any())
             {
-                var directoriesToScan = _directoriesToScan.Value;
-
-                if (directoriesToScan.Any())
+                foreach (var arg in directoriesToScan)
                 {
-                    foreach (var arg in directoriesToScan)
+                    if (Directory.Exists(arg))
                     {
-                        if (Directory.Exists(arg))
-                        {
-                            _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(arg));
-                        }
+                        _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(arg));
                     }
                 }
-                else
-                {
-                    var rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                    _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(rootPath));
-                }
-
-                return _treeViewNodes.Value;
             }
+            else
+            {
+                var rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(rootPath));
+            }
+
+            return _treeViewNodes.Value;
         }
     }
 }

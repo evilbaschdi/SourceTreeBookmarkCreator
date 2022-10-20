@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using EvilBaschdi.Core;
+﻿using EvilBaschdi.Core;
 using SourceTreeBookmarkCreator.Models;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public interface IPrepareTreeViewNodes : IValueOfList<TreeViewNode>
 {
-    /// <inheritdoc />
-    public interface IPrepareTreeViewNodes : IValue<List<TreeViewNode>>
-    {
-    }
 }

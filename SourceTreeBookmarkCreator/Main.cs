@@ -1,29 +1,26 @@
-﻿using System;
+﻿namespace SourceTreeBookmarkCreator;
 
-namespace SourceTreeBookmarkCreator
+/// <inheritdoc />
+public class Main : IMain
 {
-    /// <inheritdoc />
-    public class Main : IMain
+    private readonly IBackupExistingBookmarksFile _backupExistingBookmarksFile;
+    private readonly IWriteFileForNodes _writeFileForNodes;
+
+    /// <summary>
+    ///     Constructor
+    /// </summary>
+    /// <param name="backupExistingBookmarksFile"></param>
+    /// <param name="writeFileForNodes"></param>
+    public Main(IBackupExistingBookmarksFile backupExistingBookmarksFile, IWriteFileForNodes writeFileForNodes)
     {
-        private readonly IBackupExistingBookmarksFile _backupExistingBookmarksFile;
-        private readonly IWriteFileForNodes _writeFileForNodes;
+        _backupExistingBookmarksFile = backupExistingBookmarksFile ?? throw new ArgumentNullException(nameof(backupExistingBookmarksFile));
+        _writeFileForNodes = writeFileForNodes ?? throw new ArgumentNullException(nameof(writeFileForNodes));
+    }
 
-        /// <summary>
-        ///     Constructor
-        /// </summary>
-        /// <param name="backupExistingBookmarksFile"></param>
-        /// <param name="writeFileForNodes"></param>
-        public Main(IBackupExistingBookmarksFile backupExistingBookmarksFile, IWriteFileForNodes writeFileForNodes)
-        {
-            _backupExistingBookmarksFile = backupExistingBookmarksFile ?? throw new ArgumentNullException(nameof(backupExistingBookmarksFile));
-            _writeFileForNodes = writeFileForNodes ?? throw new ArgumentNullException(nameof(writeFileForNodes));
-        }
-
-        /// <inheritdoc />
-        public void Run()
-        {
-            _backupExistingBookmarksFile.Run();
-            _writeFileForNodes.Run();
-        }
+    /// <inheritdoc />
+    public void Run()
+    {
+        _backupExistingBookmarksFile.Run();
+        _writeFileForNodes.Run();
     }
 }

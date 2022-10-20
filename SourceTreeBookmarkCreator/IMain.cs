@@ -1,9 +1,8 @@
 ﻿using EvilBaschdi.Core;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public interface IMain : IRun
 {
-    /// <inheritdoc />
-    public interface IMain : IRun
-    {
-    }
 }

@@ -1,9 +1,8 @@
 ﻿using EvilBaschdi.Core;
 
-namespace SourceTreeBookmarkCreator
+namespace SourceTreeBookmarkCreator;
+
+/// <inheritdoc />
+public interface IDirectoriesToScan : IValueOfList<string>
 {
-    /// <inheritdoc />
-    public interface IDirectoriesToScan : IValue<string[]>
-    {
-    }
 }

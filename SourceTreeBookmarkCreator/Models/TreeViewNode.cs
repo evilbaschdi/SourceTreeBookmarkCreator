@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 
-namespace SourceTreeBookmarkCreator.Models
+namespace SourceTreeBookmarkCreator.Models;
+
+/// <remarks />
+[XmlInclude(typeof(BookmarkNode))]
+[XmlInclude(typeof(BookmarkFolderNode))]
+[Serializable]
+public class TreeViewNode
 {
+    // ReSharper disable UnusedMember.Global
+    // ReSharper disable once CollectionNeverQueried.Global
     /// <remarks />
-    [XmlInclude(typeof(BookmarkNode))]
-    [XmlInclude(typeof(BookmarkFolderNode))]
-    [Serializable]
-    public class TreeViewNode
-    {
-        // ReSharper disable UnusedMember.Global
-        // ReSharper disable once CollectionNeverQueried.Global
-        /// <remarks />
-        public List<TreeViewNode> Children { get; } = new List<TreeViewNode>();
+    public List<TreeViewNode> Children { get; } = new();
 
-        /// <remarks />
-        public bool IsExpanded { get; set; }
+    /// <remarks />
+    public bool IsExpanded { get; set; }
 
-        /// <remarks />
-        public bool IsLeaf { get; set; } = true;
+    /// <remarks />
+    public bool IsLeaf { get; set; } = true;
 
-        /// <remarks />
-        public int Level { get; set; }
+    /// <remarks />
+    public int Level { get; set; }
 
-        /// <remarks />
-        public string Name { get; set; }
-        // ReSharper restore UnusedMember.Global
-    }
+    /// <remarks />
+    public string Name { get; set; }
+    // ReSharper restore UnusedMember.Global
 }
