@@ -1,6 +1,6 @@
 ﻿using SourceTreeBookmarkCreator.Models;
 
-namespace SourceTreeBookmarkCreator;
+namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc />
 public class PrepareTreeViewNodes : IPrepareTreeViewNodes
@@ -29,20 +29,16 @@ public class PrepareTreeViewNodes : IPrepareTreeViewNodes
         {
             var directoriesToScan = _directoriesToScan.Value;
 
-            if (directoriesToScan.Any())
+            if (!directoriesToScan.Any())
             {
-                foreach (var arg in directoriesToScan)
-                {
-                    if (Directory.Exists(arg))
-                    {
-                        _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(arg));
-                    }
-                }
+                Console.WriteLine("No paths found to process!");
             }
-            else
+
+            Console.WriteLine("Processing...");
+
+            foreach (var arg in directoriesToScan.Where(Directory.Exists))
             {
-                var rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(rootPath));
+                _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(arg));
             }
 
             return _treeViewNodes.Value;

@@ -1,6 +1,6 @@
 ﻿using EvilBaschdi.Core;
 
-namespace SourceTreeBookmarkCreator;
+namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc />
 public interface IWriteFileForNodes : IRun

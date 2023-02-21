@@ -1,3 +1,5 @@
+using SourceTreeBookmarkCreator.Internal;
+
 namespace SourceTreeBookmarkCreator.Tests;
 
 public class BackupExistingBookmarksFileTests

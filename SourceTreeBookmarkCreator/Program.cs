@@ -1,4 +1,6 @@
-﻿using static System.Console;
+﻿using EvilBaschdi.Core.Internal;
+using SourceTreeBookmarkCreator.Internal;
+using static System.Console;
 
 namespace SourceTreeBookmarkCreator;
 
@@ -14,13 +16,13 @@ class Program
     // ReSharper disable once ArrangeTypeMemberModifiers
     static void Main(string[] args)
     {
-        WriteLine("Please make sure SourceTree is closed and press any key:");
+        WriteLine("Please make sure SourceTree is closed and press enter:");
         ReadKey();
-        WriteLine("Processing...");
 
+        IReadKeyFromConsole readKeyFromConsole = new ReadKeyFromConsole();
         IOutputPath outputPath = new OutputPath();
         IBackupExistingBookmarksFile backupExistingBookmarksFile = new BackupExistingBookmarksFile(outputPath);
-        IDirectoriesToScan directoriesToScan = new DirectoriesToScan(args);
+        IDirectoriesToScan directoriesToScan = new DirectoriesToScan(readKeyFromConsole, args);
         IWalkTheDirectoryTree walkTheDirectoryTree = new WalkTheDirectoryTree();
         ITreeViewNodes treeViewNodes = new TreeViewNodes();
         IPrepareTreeViewNodes prepareTreeViewNodes = new PrepareTreeViewNodes(directoriesToScan, treeViewNodes, walkTheDirectoryTree);

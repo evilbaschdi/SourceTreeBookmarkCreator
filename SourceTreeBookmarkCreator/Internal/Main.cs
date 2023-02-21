@@ -1,4 +1,4 @@
-﻿namespace SourceTreeBookmarkCreator;
+﻿namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc />
 public class Main : IMain

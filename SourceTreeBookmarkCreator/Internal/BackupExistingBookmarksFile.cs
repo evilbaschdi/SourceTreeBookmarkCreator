@@ -1,23 +1,19 @@
 ﻿using System.Diagnostics;
 using System.Security;
-using System.Xml.Serialization;
 
-namespace SourceTreeBookmarkCreator;
+namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc />
-public class WriteFileForNodes : IWriteFileForNodes
+public class BackupExistingBookmarksFile : IBackupExistingBookmarksFile
 {
     private readonly IOutputPath _outputPath;
-    private readonly IPrepareTreeViewNodes _prepareTreeViewNodes;
 
     /// <summary>
     ///     Constructor
     /// </summary>
-    /// <param name="prepareTreeViewNodes"></param>
     /// <param name="outputPath"></param>
-    public WriteFileForNodes(IPrepareTreeViewNodes prepareTreeViewNodes, IOutputPath outputPath)
+    public BackupExistingBookmarksFile(IOutputPath outputPath)
     {
-        _prepareTreeViewNodes = prepareTreeViewNodes ?? throw new ArgumentNullException(nameof(prepareTreeViewNodes));
         _outputPath = outputPath ?? throw new ArgumentNullException(nameof(outputPath));
     }
 
@@ -26,11 +22,10 @@ public class WriteFileForNodes : IWriteFileForNodes
     {
         try
         {
-            var treeViewNodes = _prepareTreeViewNodes.Value;
-            var writer = new XmlSerializer(treeViewNodes.GetType());
-            using var file = new StreamWriter(_outputPath.Value);
-            writer.Serialize(file, treeViewNodes);
-            file.Close();
+            if (File.Exists(_outputPath.Value))
+            {
+                File.Move(_outputPath.Value, $"{_outputPath}_backup_{DateTime.Now:yyyy-dd-M--HH-mm-ss}.xml");
+            }
         }
         catch (UnauthorizedAccessException unauthorizedAccessException) when (!Debugger.IsAttached)
         {

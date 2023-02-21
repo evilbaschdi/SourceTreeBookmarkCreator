@@ -1,7 +1,7 @@
 ﻿using EvilBaschdi.Core;
 using SourceTreeBookmarkCreator.Models;
 
-namespace SourceTreeBookmarkCreator;
+namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc cref="ITreeViewNodes" />
 /// <inheritdoc cref="CachedValue{T}" />

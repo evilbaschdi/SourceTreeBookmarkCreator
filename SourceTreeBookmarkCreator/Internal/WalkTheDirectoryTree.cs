@@ -1,6 +1,6 @@
 ﻿using SourceTreeBookmarkCreator.Models;
 
-namespace SourceTreeBookmarkCreator;
+namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc />
 public class WalkTheDirectoryTree : IWalkTheDirectoryTree
