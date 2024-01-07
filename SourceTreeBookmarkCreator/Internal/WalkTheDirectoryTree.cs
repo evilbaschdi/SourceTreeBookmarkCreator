@@ -1,4 +1,5 @@
 ﻿using SourceTreeBookmarkCreator.Models;
+using static System.Console;
 
 namespace SourceTreeBookmarkCreator.Internal;
 
@@ -6,42 +7,51 @@ namespace SourceTreeBookmarkCreator.Internal;
 public class WalkTheDirectoryTree : IWalkTheDirectoryTree
 {
     /// <inheritdoc />
-    public List<TreeViewNode> ValueFor(string directory)
+    public List<TreeViewNode> ValueFor((string CurrentDirectory, string ParentDirectory) value)
     {
-        if (directory == null)
-        {
-            throw new ArgumentNullException(nameof(directory));
-        }
+        var (currentDirectory, parentDirectory) = value;
+
+        ForegroundColor = ConsoleColor.Cyan;
+
+        WriteLine();
+        WriteLine($"    📁 Processing path {currentDirectory}...");
 
         var nodes = new List<TreeViewNode>();
+        var directoryName = new DirectoryInfo(currentDirectory).Name;
+        var folderNodeName = string.IsNullOrWhiteSpace(parentDirectory) ? directoryName : $"{parentDirectory}\\{directoryName}";
 
-        var tldGitFolders = Directory.GetDirectories(directory, ".git", SearchOption.TopDirectoryOnly);
+        var tldGitFolders = Directory.GetDirectories(currentDirectory, ".git", SearchOption.TopDirectoryOnly);
         if (tldGitFolders.Any())
         {
             var bookmarkNode = new BookmarkNode
                                {
-                                   Name = new DirectoryInfo(directory).Name,
-                                   Path = directory,
+                                   Name = directoryName,
+                                   Path = currentDirectory,
                                    IsLeaf = true
                                };
+            WriteLine($"        📂 Created node '{folderNodeName}'...");
+
             nodes.Add(bookmarkNode);
         }
 
-        if (Directory.GetDirectories(directory, ".git", SearchOption.AllDirectories).Length.Equals(tldGitFolders.Length))
+        if (Directory.GetDirectories(currentDirectory, ".git", SearchOption.AllDirectories).Length.Equals(tldGitFolders.Length))
         {
             return nodes;
         }
 
         var folderNode = new BookmarkFolderNode
                          {
-                             Name = new DirectoryInfo(directory).Name,
+                             Name = directoryName,
                              IsLeaf = false
                          };
 
-        var subDirectories = Directory.GetDirectories(directory);
+        WriteLine($"📂 Created folder node '{folderNodeName}'...");
+
+        var subDirectories = Directory.GetDirectories(currentDirectory);
+
         foreach (var subDirectory in subDirectories)
         {
-            folderNode.Children.AddRange(ValueFor(subDirectory));
+            folderNode.Children.AddRange(ValueFor((subDirectory, directoryName)));
         }
 
         nodes.Add(folderNode);

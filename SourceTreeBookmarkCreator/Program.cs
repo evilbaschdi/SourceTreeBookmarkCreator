@@ -32,6 +32,7 @@ class Program
         main.Run();
 
         ForegroundColor = ConsoleColor.Green;
+        WriteLine();
         WriteLine("All Done!");
         ReadKey();
     }

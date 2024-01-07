@@ -34,8 +34,8 @@ public class DirectoriesToScan : CachedValue<List<string>>, IDirectoriesToScan
                 return pathsFromArgs;
             }
 
-            var value = _readKeyFromConsole.ValueFor("Please enter valid paths separated by ; and press enter");
-            return value.Split(';').ToList();
+            var value = _readKeyFromConsole.ValueFor("Please enter valid paths separated by , and press enter");
+            return value.Split(',').ToList();
         }
     }
 }

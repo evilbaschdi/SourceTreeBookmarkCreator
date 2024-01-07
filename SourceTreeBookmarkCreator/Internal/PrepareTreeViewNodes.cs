@@ -1,4 +1,5 @@
 ﻿using SourceTreeBookmarkCreator.Models;
+using static System.Console;
 
 namespace SourceTreeBookmarkCreator.Internal;
 
@@ -31,14 +32,15 @@ public class PrepareTreeViewNodes : IPrepareTreeViewNodes
 
             if (!directoriesToScan.Any())
             {
-                Console.WriteLine("No paths found to process!");
+                WriteLine("No paths found to process!");
             }
 
-            Console.WriteLine("Processing...");
+            WriteLine();
+            WriteLine($"📁 Processing paths {string.Join(", ", directoriesToScan)}...");
 
-            foreach (var arg in directoriesToScan.Where(Directory.Exists))
+            foreach (var directoryToScan in directoriesToScan.Where(Directory.Exists))
             {
-                _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor(arg));
+                _treeViewNodes.Value.AddRange(_walkTheDirectoryTree.ValueFor((directoryToScan, string.Empty)));
             }
 
             return _treeViewNodes.Value;

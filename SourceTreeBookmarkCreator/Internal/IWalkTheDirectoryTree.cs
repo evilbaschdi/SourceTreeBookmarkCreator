@@ -4,6 +4,6 @@ using SourceTreeBookmarkCreator.Models;
 namespace SourceTreeBookmarkCreator.Internal;
 
 /// <inheritdoc />
-public interface IWalkTheDirectoryTree : IValueFor<string, List<TreeViewNode>>
+public interface IWalkTheDirectoryTree : IValueFor<(string CurrentDirectory, string ParentDirectory), List<TreeViewNode>>
 {
 }
