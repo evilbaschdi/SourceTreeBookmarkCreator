@@ -8,9 +8,7 @@ public class BookmarkNode : TreeViewNode
     public string Path { get; init; }
 
     /// <remarks />
-
-    public string RepoType { get; set; } = "Git";
-
+    /// public string RepoType { get; set; } = "Git";
     /// <remarks />
     public override string ToString() => $"Name: {Name} Path: {Path}";
     // ReSharper restore UnusedMember.Global
